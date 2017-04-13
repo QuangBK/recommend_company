@@ -15,9 +15,11 @@ fake = Faker()
 # shift_f = [0 for i in xrange(10)]
 # shift_f[0] = 100
 
+list_city = ['HCM', 'Ha_Noi', 'Da_Nang', 'HUE', 'Nha_Trang', 'Khac']
+age_range = range(18,27)
 num_of_sample = 2500
 
-X, y = make_classification(n_samples=num_of_sample, n_features=10, 
+_, y = make_classification(n_samples=num_of_sample, n_features=10, 
                            n_redundant=0, n_informative = 7,n_clusters_per_class=1,
                            n_classes= 100)
 
@@ -53,7 +55,14 @@ print ('Generate random data...')
 name_company = np.array([fake.name() for i in xrange(100)])
 
 GPA = gaussian_distribute(num_of_sample, 7.0, 1.0, 0, 10, 1)
+score_web = gaussian_distribute(num_of_sample, 8.5, 1.2, 0, 10, 1)
+score_math_1 = gaussian_distribute(num_of_sample, 7.5, 0.8, 0, 10, 1)
+score_Mac_LeNin = gaussian_distribute(num_of_sample, 5.5, 1.2, 0, 10, 1)
+score_mobile = gaussian_distribute(num_of_sample, 7.0, 1.0, 0, 10, 1)
+score_db = gaussian_distribute(num_of_sample, 6.0, 1.2, 0, 10, 1)
+
 gender = np.random.choice(['male', 'female'], size=(num_of_sample), p= [0.6, 0.4])
+age = np.random.choice(age_range, size=(num_of_sample))
 semester = rand_distribute(num_of_sample, 8, 0)
 # is_ok = gaussian_distribute(num_of_sample, 0.2, 0.21, 0, 1, 0)
 is_ok = np.random.choice(['yes', 'no'], size=(num_of_sample), p= [0.9, 0.1])
@@ -63,7 +72,7 @@ mutilchoie_3 = gaussian_distribute(num_of_sample, 1, 1, 0, 2, 0)
 mutilchoie_2_1 = np.random.choice(['yes', 'no'], size=(num_of_sample), p= [0.3, 0.7])
 mutilchoie_2_2 = np.random.choice(['yes', 'no'], size=(num_of_sample), p= [0.5, 0.5])
 mutilchoie_2_3 = np.random.choice(['yes', 'no'], size=(num_of_sample), p= [0.65, 0.35])
-
+noi_muon_lam = np.random.choice(list_city, size=(num_of_sample), p= [0.2, 0.1, 0.2, 0.1, 0.3, 0.1])
 # extra_info = X[:,0:2]
 
 #=================================
@@ -74,29 +83,54 @@ mutilchoie_3, le_3, enc_3 = encode_label(mutilchoie_3)
 mutilchoie_2_1, le_21, enc_21 = encode_label(mutilchoie_2_1)
 mutilchoie_2_2, le_22, enc_22 = encode_label(mutilchoie_2_2)
 mutilchoie_2_3, le_23, enc_23 = encode_label(mutilchoie_2_3)
-
+noi_muon_lam, le_noi_muon_lam, enc_noi_muon_lam = encode_label(noi_muon_lam)
 # y_data = encode_label(y)
 
 GPA = GPA.reshape(-1,1)
+score_web = score_web.reshape(-1,1)
+score_math_1 = score_math_1.reshape(-1,1)
+score_Mac_LeNin = score_Mac_LeNin.reshape(-1,1)
+score_mobile = score_mobile.reshape(-1,1)
+score_db = score_db.reshape(-1,1)
+age = age.reshape(-1,1)
 semester = semester.reshape(-1,1)
 ctxh = ctxh.reshape(-1,1)
 #==================================
-X_data = np.hstack((GPA,gender))
-X_data = np.hstack((X_data,semester))
+X_data = np.hstack((GPA,score_web))
+X_data = np.hstack((X_data,score_math_1))
+X_data = np.hstack((X_data,score_Mac_LeNin))
+X_data = np.hstack((X_data,score_mobile))
+X_data = np.hstack((X_data,score_db))
 X_data = np.hstack((X_data,gender))
+X_data = np.hstack((X_data,age))
+X_data = np.hstack((X_data,semester))
 X_data = np.hstack((X_data,is_ok))
 X_data = np.hstack((X_data,mutilchoie_5))
 X_data = np.hstack((X_data,mutilchoie_3))
 X_data = np.hstack((X_data,mutilchoie_2_1))
 X_data = np.hstack((X_data,mutilchoie_2_2))
 X_data = np.hstack((X_data,mutilchoie_2_3))
+X_data = np.hstack((X_data,noi_muon_lam))
 
 def convert_raw_data(data):
     GPA = np.array([data['GAP']])
+    score_web = np.array([data['score_web']])
+    score_math_1 = np.array([data['score_math_1']])
+    score_Mac_LeNin = np.array([data['score_Mac_LeNin']])
+    score_mobile = np.array([data['score_mobile']])
+    score_db = np.array([data['score_db']])
+    age = np.array([data['age']])
     semester = np.array([data['semester']])
     ctxh = np.array([data['ctxh']])
     
+    
     GPA = GPA.reshape(-1,1)
+    score_web = score_web.reshape(-1,1)
+    score_math_1 = score_math_1.reshape(-1,1)
+    score_Mac_LeNin = score_Mac_LeNin.reshape(-1,1)
+    score_mobile = score_mobile.reshape(-1,1)
+    score_db = score_db.reshape(-1,1)
+    age = age.reshape(-1,1)
     semester = semester.reshape(-1,1)
     ctxh = ctxh.reshape(-1,1)
 
@@ -107,16 +141,23 @@ def convert_raw_data(data):
     mutilchoie_2_1, _, _ = encode_label([data['mutilchoie_2_1']], le_21, enc_21)
     mutilchoie_2_2, _, _ = encode_label([data['mutilchoie_2_2']], le_22, enc_22)
     mutilchoie_2_3, _, _ = encode_label([data['mutilchoie_2_3']], le_23, enc_23)
+    noi_muon_lam, _, _ = encode_label([data['noi_muon_lam']], le_noi_muon_lam, enc_noi_muon_lam)
 
-    X_data = np.hstack((GPA,gender))
-    X_data = np.hstack((X_data,semester))
+    X_data = np.hstack((GPA,score_web))
+    X_data = np.hstack((X_data,score_math_1))
+    X_data = np.hstack((X_data,score_Mac_LeNin))
+    X_data = np.hstack((X_data,score_mobile))
+    X_data = np.hstack((X_data,score_db))
     X_data = np.hstack((X_data,gender))
+    X_data = np.hstack((X_data,age))
+    X_data = np.hstack((X_data,semester))
     X_data = np.hstack((X_data,is_ok))
     X_data = np.hstack((X_data,mutilchoie_5))
     X_data = np.hstack((X_data,mutilchoie_3))
     X_data = np.hstack((X_data,mutilchoie_2_1))
     X_data = np.hstack((X_data,mutilchoie_2_2))
     X_data = np.hstack((X_data,mutilchoie_2_3))
+    X_data = np.hstack((X_data,noi_muon_lam))
     return X_data
 
 print ('Start: training')
@@ -184,5 +225,11 @@ with open('./pre_data/le_23.pkl', 'wb') as fid:
     
 with open('./pre_data/enc_23.pkl', 'wb') as fid:
     pickle.dump(enc_23, fid)
+
+with open('./pre_data/le_noi_muon_lam.pkl', 'wb') as fid:
+    pickle.dump(le_noi_muon_lam, fid)
+    
+with open('./pre_data/enc_noi_muon_lam.pkl', 'wb') as fid:
+    pickle.dump(enc_noi_muon_lam, fid)
 
 print ('Finish.')
