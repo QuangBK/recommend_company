@@ -49,7 +49,7 @@ def encode_label(x, le=None, enc=None):
     return X_.toarray(), le, enc
 
 # def convert_raw_data(data):
-#     GPA = np.array([data['GAP']])
+#     GPA = np.array([data['GPA']])
 #     semester = np.array([data['semester']])
 #     ctxh = np.array([data['ctxh']])
     
@@ -77,7 +77,7 @@ def encode_label(x, le=None, enc=None):
 #     return X_data
 
 def convert_raw_data(data):
-    GPA = np.array([data['GAP']])
+    GPA = np.array([data['GPA']])
     score_web = np.array([data['score_web']])
     score_math_1 = np.array([data['score_math_1']])
     score_Mac_LeNin = np.array([data['score_Mac_LeNin']])
@@ -184,7 +184,7 @@ def main(list_arg):
     with open('./pre_data/enc_noi_muon_lam.pkl', 'rb') as fid:
         enc_noi_muon_lam = pickle.load(fid)
 
-    fields = ['GAP', 'score_web', 'score_math_1', 'score_Mac_LeNin', 'score_mobile',
+    fields = ['GPA', 'score_web', 'score_math_1', 'score_Mac_LeNin', 'score_mobile',
             'score_db', 'gender', 'age', 'semester', 'ctxh', 'is_ok', 'mutilchoie_5',
             'mutilchoie_3', 'mutilchoie_2_1', 'mutilchoie_2_2', 'mutilchoie_2_3',
             'noi_muon_lam']
@@ -197,8 +197,8 @@ def main(list_arg):
             data_raw[fields[i]] = list_arg[i]
         if type_fields[i] == 2:
             data_raw[fields[i]] = float(list_arg[i])
-    print data_raw
-    # data_raw = {'GAP': float(list_arg[0]),
+    # print data_raw
+    # data_raw = {'GPA': float(list_arg[0]),
     #             '' 
     #             'is_ok': list_arg[1],'gender': list_arg[2],
     #             'age': int(list_arg[3])
@@ -219,7 +219,7 @@ if __name__ == '__main__':
 
 # Run code
 # params as list fields 
-#     fields = ['GAP', 'score_web', 'score_math_1', 'score_Mac_LeNin', 'score_mobile',
+#     fields = ['GPA', 'score_web', 'score_math_1', 'score_Mac_LeNin', 'score_mobile',
 #             'score_db', 'gender', 'age', 'semester', 'ctxh', 'is_ok', 'mutilchoie_5',
 #             'mutilchoie_3', 'mutilchoie_2_1', 'mutilchoie_2_2', 'mutilchoie_2_3',
 #             'noi_muon_lam']
