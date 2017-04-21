@@ -210,8 +210,12 @@ def main(list_arg):
     data_test = convert_raw_data(data_raw)
     pred = clf.predict_proba(data_test)
     index_com = pred[0].argsort()[-5:][::-1]
+    dict_output = {}
     for i in index_com:
         print (name_company[i], pred[0][i])
+        dict_output[name_company[i]] = pred[0][i]
+    df = pd.DataFrame(dict_output.items(), columns=['Company', 'Probability'])
+    df.to_csv('./output.csv')
     return name_company[index_com]
 
 if __name__ == '__main__':

@@ -1,3 +1,4 @@
 pre_data/*.pkl
 model/*.pkl
 dataset/*
+output.csv
